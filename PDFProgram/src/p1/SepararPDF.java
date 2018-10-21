@@ -20,25 +20,34 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SepararPDF extends Frame implements ActionListener, WindowListener  {
+	
+	public MainWindow main = null;
 	private Label lblFile1;    
 	private TextField path1;
-   private Button browse1; 
-   private Label lblPag1;   
-   private TextField pag1; 
-   private Label lblPag2;     
-   private TextField pag2;  
-   private Button separate_button;   
-   private Label lblFinal; 
+	private Button browse1; 
+	private Label lblPag1;   
+	private TextField pag1; 
+	private Label lblPag2;     
+	private TextField pag2;  
+	private Button separate_button;   
+	private Label lblFinal; 
 
-   private String file1 = "";
-   private int pag1_num = -1;
-   private int pag2_num = -1;
-   private boolean file1Selected = false;
-   private boolean pag1Selected = false;
-   private boolean pag2Selected = false;
-   private String last_path = null;
+	private String file1 = "";
+	private int pag1_num = -1;
+	private int pag2_num = -1;
+	private boolean file1Selected = false;
+	private boolean pag1Selected = false;
+	private boolean pag2Selected = false;
+	private String last_path = null;
  
+   public void setMain (MainWindow m) {
+	   main = m;
+   }
+   public MainWindow getMain () {
+	   return main;
+   }
    public SepararPDF () {
+
       setLayout(new FlowLayout());
        
       lblFile1 = new Label("Archivo 1");  
@@ -115,16 +124,19 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
  
    
    public void windowClosing(WindowEvent evt) {
-	      this.setVisible(false); 
-	      file1Selected = false;
-	 	   pag1Selected = false;
-	 	   pag2Selected = false;
-	 	   pag1.setText("");
-	 	   pag2.setText("");
-	 	   path1.setText("");
-	 	   file1 = "";
-	 	   pag1_num = -1;
-	 	   pag2_num = -1;
+	   this.setVisible(false); 
+	   file1Selected = false;
+	   pag1Selected = false;
+	   pag2Selected = false;
+	   pag1.setText("");
+	   pag2.setText("");
+	   path1.setText("");
+	   file1 = "";
+	   pag1_num = -1;
+	   pag2_num = -1;
+	   main.setLocation(this.getLocation());
+
+	   main.setVisible(true);
    }
    
    @Override
@@ -140,8 +152,8 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 		   chooser = new JFileChooser(last_path);
 	   }
 
-       	FileFilter filter = new FileNameExtensionFilter("pdf", "pdf");
-        chooser.setFileFilter(filter);
+       FileFilter filter = new FileNameExtensionFilter("pdf", "pdf");
+       chooser.setFileFilter(filter);
         
 
 	   	if (evt.getSource() == browse1) {
@@ -159,8 +171,8 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 	   
 	   	if (evt.getSource() == separate_button) {
 	   		try {
-		     pag1_num = Integer.parseInt(pag1.getText());
-		     pag1Selected = true;
+	   			pag1_num = Integer.parseInt(pag1.getText());
+	   			pag1Selected = true;
 	   		} catch (NumberFormatException e) {
 	   			lblFinal.setText("Número de página inicial erróneo");
 	   			pag1Selected = false;
@@ -170,6 +182,7 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 			    pag2Selected = true;
 
 		   		} catch (NumberFormatException e) {
+		   		
 		   		pag2Selected = false;
 
 		   	}		     
@@ -213,6 +226,7 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 		        			lblFinal.setText("Número mínimo de páginas inválido");
 		        		}
 		        		else {
+		        			lblFinal.setText("Separando páginas");
 			        		Splitter splitter = new Splitter();
 			        		
 			        		splitter.setStartPage(pag1_num);
@@ -251,15 +265,15 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 							e.printStackTrace();
 						}
 		        		file1Selected = false;
-		     	 	   pag1Selected = false;
-		     	 	   pag2Selected = false;
-		     	 	   lblFinal.setText("Documento creado");
-		     	 	   pag1.setText("");
-		     	 	   pag2.setText("");
-		     	 	   path1.setText("");
-		     	 	   file1 = "";
-		     	 	   pag1_num = -1;
-		     	 	   pag2_num = -1;
+		     	 	   	pag1Selected = false;
+		     	 	   	pag2Selected = false;
+		     	 	   	lblFinal.setText("Documento creado");
+		     	 	   	pag1.setText("");
+		     	 	   	pag2.setText("");
+		     	 	   	path1.setText("");
+		     	 	   	file1 = "";
+		     	 	   	pag1_num = -1;
+		     	 	   	pag2_num = -1;
 		        	}
 	        	}
 	        }
@@ -271,6 +285,7 @@ public class SepararPDF extends Frame implements ActionListener, WindowListener 
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
+		main.setVisible(false);
 		// TODO Auto-generated method stub
 		
 	}
